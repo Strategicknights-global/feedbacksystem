@@ -7,6 +7,7 @@ import UnifiedFeedbackForm from './components/UnifiedFeedbackForm';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
+// This component uses Auth context to render correct routes based on role
 function AppContent() {
   const { currentUser, userRole } = useAuth();
 
@@ -15,7 +16,10 @@ function AppContent() {
       <Navbar />
       <main className="main-content">
         <Routes>
+          {/* Public route */}
           <Route path="/login" element={<LoginPage />} />
+
+          {/* Protected admin route */}
           <Route 
             path="/admin" 
             element={
@@ -24,6 +28,8 @@ function AppContent() {
               </ProtectedRoute>
             } 
           />
+
+          {/* Protected student route */}
           <Route 
             path="/feedback" 
             element={
@@ -32,15 +38,17 @@ function AppContent() {
               </ProtectedRoute>
             } 
           />
+
+          {/* Redirect root path based on authentication and role */}
           <Route 
             path="/"
             element={
               !currentUser ? (
-                <Navigate to="/login" />
+                <Navigate to="/login" replace />
               ) : userRole === 'admin' ? (
-                <Navigate to="/admin" />
+                <Navigate to="/admin" replace />
               ) : (
-                <Navigate to="/feedback" />
+                <Navigate to="/feedback" replace />
               )
             }
           />
@@ -50,6 +58,7 @@ function AppContent() {
   );
 }
 
+// App wrapper with Router and AuthProvider
 function App() {
   return (
     <Router>
