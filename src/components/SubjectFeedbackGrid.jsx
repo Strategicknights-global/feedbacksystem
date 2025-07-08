@@ -16,7 +16,6 @@ const SubjectFeedbackGrid = ({ form }) => {
   const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
-  
   const currentUser = auth.currentUser;
   const rollNumber = currentUser?.email.split('@')[0];
   const yearOfJoining = rollNumber ? `20${rollNumber.substring(0, 2)}` : null;
@@ -41,7 +40,6 @@ const SubjectFeedbackGrid = ({ form }) => {
       const questionsSnapshot = await getDocs(questionQuery);
       const questionsList = questionsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setQuestions(questionsList);
-      
       if (subjectsList.length === 0 || questionsList.length === 0) {
         setMessage("No feedback items found for your selection. Please contact your administrator.");
       }
@@ -109,7 +107,6 @@ const SubjectFeedbackGrid = ({ form }) => {
   return (
     <div>
       {loading && <p className="text-center font-semibold text-slate-500">Loading...</p>}
-      
       {message && <p className={`text-center font-bold my-4 ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>{message}</p>}
 
       {!loading && (questions.length > 0) && (subjects.length > 0) && (
@@ -191,7 +188,6 @@ const SubjectFeedbackGrid = ({ form }) => {
               </div>
             </div>
           )}
-          
           <div className="text-center mt-8">
             <button type="submit" className="px-12 py-3 font-semibold text-white bg-blue-600 rounded-lg" disabled={isSubmitting}>
               {isSubmitting ? 'Submitting...' : 'Submit Feedback'}

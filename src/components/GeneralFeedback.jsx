@@ -1,4 +1,4 @@
-// src/components/GeneralFeedback.jsx
+
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebaseConfig';
 import { collection, getDocs, addDoc, query, where, serverTimestamp } from 'firebase/firestore';

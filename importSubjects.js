@@ -1,4 +1,3 @@
-// importSubjects.js (ES Module Version)
 
 import admin from 'firebase-admin';
 import fs from 'fs';
