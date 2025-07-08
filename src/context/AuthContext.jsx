@@ -59,33 +59,45 @@ export function AuthProvider({ children }) {
         deptCode,
         studentId,
         department: departmentMapOld[deptCode] || 'UNKNOWN',
-      };
-    } else if (/^\d{16}$/.test(roll)) {
-      // NEW FORMAT: 16 digits
-      const yoj = roll.substring(0, 2);
-      const zone = roll.substring(2, 4);
-      const collegeCode = roll.substring(4, 8);
-      const deptCode = roll.substring(8, 11);
-      const mediumCode = roll[11];
-      const genderCode = roll[12];
-      const studentId = roll.substring(13);
+        };
+    }else if (/^\d{16}$/.test(roll)) {
+    const yoj = roll.substring(0, 2);
+    const zone = roll.substring(2, 4);
+    const collegeCode = roll.substring(4, 8);
+    const deptCode = roll.substring(8, 11);
+    const mediumCode = roll[11];
+    const genderCode = roll[12];
+    const studentId = roll.substring(13);
 
-      const medium = mediumCode === '2' ? 'English' : 'Tamil';
-      const gender = genderCode === '2' ? 'Female' : 'Male';
+    const medium = mediumCode === '2' ? 'English' : 'Tamil';
+    const gender = genderCode === '2' ? 'Female' : 'Male';
 
+    const isValid = zone === '03' && collegeCode === '7176';
+
+    if (!isValid) {
       return {
-        normalizedRoll: roll,
-        format: 'NEW',
-        yoj: `20${yoj}`,
-        zoneCode: zone,
+        valid: false,
+        reason: 'Invalid Zone or College Code',
+        zone,
         collegeCode,
-        deptCode,
-        studentId,
-        medium,
-        gender,
-        department: departmentMapNew[deptCode] || 'UNKNOWN',
+        roll
       };
-    } else {
+    }
+
+    return {
+      valid: true,
+      normalizedRoll: roll,
+      format: 'NEW',
+      yoj: `20${yoj}`,
+      zoneCode: zone,
+      collegeCode,
+      deptCode,
+      studentId,
+      medium,
+      gender,
+      department: departmentMapNew[deptCode] || 'UNKNOWN'
+    };
+  }else {
       throw new Error('Invalid roll number format');
     }
   };
